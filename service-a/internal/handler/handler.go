@@ -50,7 +50,6 @@ func (h *CepHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	client := http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
 	
-	body, _ := json.Marshal(req)
 	reqB, err := http.NewRequestWithContext(ctx, "GET", h.ServiceBURL+"/"+req.Cep, nil)
 	if err != nil {
 		http.Error(w, "Internal error", http.StatusInternalServerError)
