@@ -129,6 +129,24 @@ can not find zipcode
 
 ## 🔍 Visualizing Traces in Zipkin
 
+After making a request, you can visualize the distributed tracing:
+
+1.  Access the Zipkin UI: [http://localhost:9411](http://localhost:9411)
+2.  Click **"RUN QUERY"**.
+3.  Open the trace for `service-a`.
+
+### Expected Trace Structure:
+A successful instrumentation will show a hierarchical waterfall:
+- **`service-a`**: Root span (HTTP POST).
+  - **`forward-to-service-b`**: Span measuring the request to the second service.
+    - **`service-b: weather-handler`**: Entry point in Service B.
+      - **`get-city-by-zipcode-viacep`**: **Manual Span** for ViaCEP API call.
+      - **`get-temperature-by-city-weatherapi`**: **Manual Span** for WeatherAPI call.
+
+This structure confirms that:
+1.  **Distributed Tracing** is working (Context propagation from A to B).
+2.  **Manual Spans** are correctly implemented as per requirements.
+
 ## 🛠️ Technologies
 - **Go** (Golang)
 - **OpenTelemetry** (SDK & OTLP)
