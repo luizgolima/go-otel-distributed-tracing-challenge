@@ -10,8 +10,8 @@ import (
 )
 
 type ViaCepResponse struct {
-	Localidade string `json:"localidade"`
-	Erro       bool   `json:"erro"`
+	Localidade string      `json:"localidade"`
+	Erro       interface{} `json:"erro"`
 }
 
 func GetCityByZipCode(ctx context.Context, zipcode string) (string, error) {
@@ -35,7 +35,16 @@ func GetCityByZipCode(ctx context.Context, zipcode string) (string, error) {
 		return "", err
 	}
 
-	if viacep.Erro {
+	if viacep.Erro != nil {
+		if errBool, ok := viacep.Erro.(bool); ok && errBool {
+			return "", fmt.Errorf("zipcode not found")
+		}
+		if errStr, ok := viacep.Erro.(string); ok && errStr == "true" {
+			return "", fmt.Errorf("zipcode not found")
+		}
+	}
+
+	if viacep.Localidade == "" {
 		return "", fmt.Errorf("zipcode not found")
 	}
 
