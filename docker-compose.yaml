@@ -23,7 +23,7 @@ services:
     environment:
       - SERVICE_NAME=service-b
       - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
-      - WEATHER_API_KEY=your_api_key_here
+      - WEATHER_API_KEY=dd69660279c7451593102923261505
     depends_on:
       - otel-collector
 
