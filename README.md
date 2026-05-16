@@ -77,17 +77,19 @@ This will start:
 
 ---
 
-## 📊 API Usage
+## 📊 API Usage & Testing
 
-### 1. Request to Service A
-**Endpoint:** `POST http://localhost:8080`
+You can use the following `curl` commands to test the system:
 
-**Payload:**
-```json
-{ "cep": "01153000" }
+### 1. Success Scenario (Valid CEP)
+**Request:**
+```bash
+curl --request POST \
+  --url http://localhost:8080/ \
+  --header 'Content-Type: application/json' \
+  --data '{"cep": "01153000"}'
 ```
-
-**Success Response (200 OK):**
+**Expected Response (200 OK):**
 ```json
 {
   "city": "São Paulo",
@@ -97,13 +99,35 @@ This will start:
 }
 ```
 
-### 2. Tracing in Zipkin
-After making a request, access the Zipkin UI to see the distributed traces:
-- **URL:** `http://localhost:9411`
-- Click "Run Query" to see the latest traces.
-- You will see the flow: `service-a` -> `service-b` -> `get-city-by-zipcode-viacep` -> `get-temperature-by-city-weatherapi`.
+### 2. Invalid Format (Validation Error)
+**Request:**
+```bash
+curl -i --request POST \
+  --url http://localhost:8080/ \
+  --header 'Content-Type: application/json' \
+  --data '{"cep": "123"}'
+```
+**Expected Response (422 Unprocessable Entity):**
+```text
+invalid zipcode
+```
+
+### 3. Zip Code Not Found
+**Request:**
+```bash
+curl -i --request POST \
+  --url http://localhost:8080/ \
+  --header 'Content-Type: application/json' \
+  --data '{"cep": "99999999"}'
+```
+**Expected Response (404 Not Found):**
+```text
+can not find zipcode
+```
 
 ---
+
+## 🔍 Visualizing Traces in Zipkin
 
 ## 🛠️ Technologies
 - **Go** (Golang)
