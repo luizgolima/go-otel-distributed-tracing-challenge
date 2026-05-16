@@ -48,14 +48,17 @@ The system follows a distributed orchestration pattern:
 
 ## ⚙️ Configuration
 
-Service B requires a **WeatherAPI** key. You can get one at [weatherapi.com](https://www.weatherapi.com/).
+The only mandatory configuration is the **WeatherAPI** key for **Service B**. You can get one for free at [weatherapi.com](https://www.weatherapi.com/).
 
-Update the `WEATHER_API_KEY` in `docker-compose.yaml` before running.
+### How to configure:
+1. Open `docker-compose.yaml`.
+2. Locate the `service-b` section.
+3. Replace `your_api_key_here` with your actual API key.
 
-| Variable | Description |
-|----------|-------------|
-| `WEATHER_API_KEY` | API Key for WeatherAPI |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | OTLP Collector Address |
+| Variable | Description | Default/Status |
+|----------|-------------|----------------|
+| `WEATHER_API_KEY` | API Key for WeatherAPI | **Mandatory** |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | OTLP Collector Address | Pre-configured (`otel-collector:4317`) |
 
 ---
 
